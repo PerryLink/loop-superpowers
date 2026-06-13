@@ -1,0 +1,105 @@
+{
+  "name": "loop-superpowers",
+  "version": "0.1.1",
+  "description": "工具箱模式——把Superpowers的每个技能变成自主mini-loop。7个子skill各自独立闭环，选择技能/设定目标/自动跑到底。 | Toolkit mode — turn every Superpowers skill into an autonomous mini-loop. 7 sub-skills, each an independent closed loop: pick a skill, set a goal, run to completion.",
+  "author": "loop-superpowers team",
+  "license": "Apache-2.0",
+  "platform": {
+    "name": "claude-code",
+    "min_version": ">=2.1.0"
+  },
+  "dependencies": {
+    "superpowers": ">=1.0.0",
+    "required_skills": [
+      "superpowers:brainstorming",
+      "superpowers:writing-plans",
+      "superpowers:executing-plans",
+      "superpowers:systematic-debugging",
+      "superpowers:test-driven-development",
+      "superpowers:verification-before-completion"
+    ]
+  },
+  "skills": [
+    {
+      "name": "loop-brainstorming",
+      "path": ".claude/skills/loop-brainstorming/SKILL.md",
+      "invoke": "/loop-brainstorming",
+      "description": "设定研究方向，自动多轮探索、收敛、产出结构化方案",
+      "base_skill": "superpowers:brainstorming",
+      "max_turns": 5,
+      "category": "design"
+    },
+    {
+      "name": "loop-planning",
+      "path": ".claude/skills/loop-planning/SKILL.md",
+      "invoke": "/loop-planning",
+      "description": "接收方案，自动拆解任务、排优先级、产出可执行 Plan",
+      "base_skill": "superpowers:writing-plans",
+      "max_turns": 3,
+      "category": "design"
+    },
+    {
+      "name": "loop-execution",
+      "path": ".claude/skills/loop-execution/SKILL.md",
+      "invoke": "/loop-execution",
+      "description": "按 Plan 逐个实施 task，内建自检修复循环",
+      "base_skill": "superpowers:executing-plans",
+      "max_turns": 8,
+      "category": "implementation"
+    },
+    {
+      "name": "loop-debugging",
+      "path": ".claude/skills/loop-debugging/SKILL.md",
+      "invoke": "/loop-debugging",
+      "description": "接收 bug 描述，自动复现、根因定位、修复、回归验证",
+      "base_skill": "superpowers:systematic-debugging",
+      "max_turns": 5,
+      "category": "implementation"
+    },
+    {
+      "name": "loop-tdd",
+      "path": ".claude/skills/loop-tdd/SKILL.md",
+      "invoke": "/loop-tdd",
+      "description": "红→绿→重构 循环，测试先行驱动实现",
+      "base_skill": "superpowers:test-driven-development",
+      "max_turns": 8,
+      "category": "implementation"
+    },
+    {
+      "name": "loop-verification",
+      "path": ".claude/skills/loop-verification/SKILL.md",
+      "invoke": "/loop-verification",
+      "description": "接收代码产物，自动运行验证命令、审计、产出报告",
+      "base_skill": "superpowers:verification-before-completion",
+      "max_turns": 3,
+      "category": "verification"
+    },
+    {
+      "name": "loop-pipeline",
+      "path": ".claude/skills/loop-pipeline/SKILL.md",
+      "invoke": "/loop-pipeline",
+      "description": "串联其他 loop-* skill 的调度器，编排端到端流程",
+      "base_skill": null,
+      "max_turns": null,
+      "category": "orchestration",
+      "depends_on": [
+        "loop-brainstorming",
+        "loop-planning",
+        "loop-execution",
+        "loop-debugging",
+        "loop-tdd",
+        "loop-verification"
+      ]
+    }
+  ],
+  "config": {
+    "artifacts_base_dir": ".claude/skills/{skill_name}/artifacts",
+    "default_max_turns": 5,
+    "decision_logging": true,
+    "checkpoint_on_turn": true
+  },
+  "hooks": {
+    "_note": "loop-superpowers 不使用 Hook 体系——安全模型基于 Phase Contract 自觉遵守。Hook 字段保留以备未来可选加固。 | loop-superpowers does not use the Hook system — the security model is based on Phase Contract self-discipline. The Hook field is reserved for future optional hardening.",
+    "enabled": false
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://loop-superpowers.ai/schemas/pipeline-config.json",
+  "pipeline": {
+    "name": "test-pipeline-2step",
+    "version": "1.0",
+    "description": "Test pipeline: brainstorm -> plan 2-step chain (LENIENT mode)",
+    "mode": "LENIENT",
+    "steps": [
+      {
+        "id": "step-1",
+        "skill": "loop-brainstorming",
+        "goal": "设计一个缓存失效策略",
+        "max_turns": 3,
+        "artifacts_dir": ".claude/skills/loop-brainstorming/artifacts",
+        "expected_outputs": [
+          "01-exploration.md",
+          "02-recommendation.md",
+          "03-solution.md"
+        ]
+      },
+      {
+        "id": "step-2",
+        "skill": "loop-planning",
+        "input_from": "step-1",
+        "input_file": "03-solution.md",
+        "max_turns": 2,
+        "artifacts_dir": ".claude/skills/loop-planning/artifacts",
+        "expected_outputs": [
+          "task-plan.json",
+          "implementation-plan.md"
+        ]
+      }
+    ],
+    "failure_severity_threshold": "ERROR",
+    "max_total_turns": 8,
+    "require_compliance_log": true
+  }
+}

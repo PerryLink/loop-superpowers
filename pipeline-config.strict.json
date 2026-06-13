@@ -1,0 +1,37 @@
+{
+  "$schema": "https://loop-superpowers.ai/schemas/pipeline-config.json",
+  "pipeline": {
+    "name": "test-pipeline-strict",
+    "version": "1.0",
+    "description": "Test pipeline: STRICT mode failure abort scenario",
+    "mode": "STRICT",
+    "steps": [
+      {
+        "id": "step-1",
+        "skill": "loop-brainstorming",
+        "goal": "列出今天要做的 3 件事",
+        "max_turns": 2,
+        "artifacts_dir": ".claude/skills/loop-brainstorming/artifacts",
+        "expected_outputs": [
+          "01-exploration.md",
+          "final-report.md"
+        ]
+      },
+      {
+        "id": "step-2",
+        "skill": "loop-planning",
+        "input_from": "step-1",
+        "input_file": "non_existent_file.md",
+        "max_turns": 2,
+        "artifacts_dir": ".claude/skills/loop-planning/artifacts",
+        "expected_outputs": [
+          "task-plan.json"
+        ],
+        "fail_on_missing_input": true
+      }
+    ],
+    "failure_severity_threshold": "CRITICAL",
+    "max_total_turns": 6,
+    "require_compliance_log": true
+  }
+}

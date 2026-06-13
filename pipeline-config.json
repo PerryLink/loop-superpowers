@@ -1,0 +1,49 @@
+{
+  "version": "1.0",
+  "pipeline_name": "default",
+  "description": "Default loop-superpowers pipeline configuration",
+  "stages": [
+    {
+      "name": "loop-brainstorming",
+      "skill": "loop-brainstorming",
+      "enabled": true,
+      "input": null,
+      "output": "artifacts/01-brainstorming-output.md",
+      "gate": "G1",
+      "max_turns": 5
+    },
+    {
+      "name": "loop-planning",
+      "skill": "loop-planning",
+      "enabled": true,
+      "input": "artifacts/01-brainstorming-output.md",
+      "output": "artifacts/02-planning-output.md",
+      "gate": "G1",
+      "max_turns": 3
+    },
+    {
+      "name": "loop-execution",
+      "skill": "loop-execution",
+      "enabled": true,
+      "input": "artifacts/02-planning-output.md",
+      "output": "artifacts/03-execution-output.md",
+      "gate": "G2",
+      "max_turns": 8
+    },
+    {
+      "name": "loop-verification",
+      "skill": "loop-verification",
+      "enabled": true,
+      "input": "artifacts/03-execution-output.md",
+      "output": "artifacts/04-verification-output.md",
+      "gate": "G3",
+      "max_turns": 3
+    }
+  ],
+  "settings": {
+    "default_max_turns": 5,
+    "decision_logging": true,
+    "checkpoint_on_turn": true,
+    "fail_fast": true
+  }
+}
